@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: crud_users_and_auth
+  profiles:
+    active: DEV

@@ -8,7 +8,7 @@
 		<version>3.2.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.com.demattosiury</groupId>
+	<groupId>br.com.rufuziu</groupId>
 	<artifactId>crud_users_and_auth</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>crud_users_and_auth</name>

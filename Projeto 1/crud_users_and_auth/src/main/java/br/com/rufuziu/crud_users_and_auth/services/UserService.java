@@ -1,9 +1,9 @@
-package br.com.demattosiury.crud_users_and_auth.services;
+package br.com.rufuziu.crud_users_and_auth.services;
 
-import br.com.demattosiury.crud_users_and_auth.dto.UserDTO;
-import br.com.demattosiury.crud_users_and_auth.entity.User;
-import br.com.demattosiury.crud_users_and_auth.exceptions.user.UserAlreadyExists;
-import br.com.demattosiury.crud_users_and_auth.repository.UserRepository;
+import br.com.rufuziu.crud_users_and_auth.dto.UserDTO;
+import br.com.rufuziu.crud_users_and_auth.entity.User;
+import br.com.rufuziu.crud_users_and_auth.exceptions.user.UserAlreadyExists;
+import br.com.rufuziu.crud_users_and_auth.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

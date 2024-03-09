@@ -1,4 +1,4 @@
-package br.com.demattosiury.crud_users_and_auth.dto;
+package br.com.rufuziu.crud_users_and_auth.dto;
 
 import java.util.Date;
 

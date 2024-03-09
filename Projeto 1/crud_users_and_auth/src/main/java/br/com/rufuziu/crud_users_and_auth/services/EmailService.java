@@ -1,8 +1,7 @@
-package br.com.demattosiury.crud_users_and_auth.services;
+package br.com.rufuziu.crud_users_and_auth.services;
 
-import br.com.demattosiury.crud_users_and_auth.entity.FailedMail;
-import br.com.demattosiury.crud_users_and_auth.repository.FailedMailRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.rufuziu.crud_users_and_auth.entity.FailedMail;
+import br.com.rufuziu.crud_users_and_auth.repository.FailedMailRepository;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -28,6 +27,7 @@ public class EmailService {
         try {
             javaMailSender.send(message);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             repository.save(new FailedMail(to,subject,body));
         }
     }

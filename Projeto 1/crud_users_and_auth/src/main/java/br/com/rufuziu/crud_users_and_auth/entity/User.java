@@ -1,4 +1,4 @@
-package br.com.demattosiury.crud_users_and_auth.entity;
+package br.com.rufuziu.crud_users_and_auth.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

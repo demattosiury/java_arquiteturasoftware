@@ -1,4 +1,4 @@
-package br.com.demattosiury.crud_users_and_auth.entity;
+package br.com.rufuziu.crud_users_and_auth.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,10 +32,9 @@ public class FailedMail {
         return receiver;
     }
 
-    public void setReciever(String receiver) {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
-
     public String getSubject() {
         return subject;
     }
@@ -51,4 +50,5 @@ public class FailedMail {
     public void setBody(String body) {
         this.body = body;
     }
+
 }

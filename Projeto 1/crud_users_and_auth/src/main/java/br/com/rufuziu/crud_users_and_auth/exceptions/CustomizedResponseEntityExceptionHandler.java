@@ -1,7 +1,7 @@
-package br.com.demattosiury.crud_users_and_auth.exceptions;
+package br.com.rufuziu.crud_users_and_auth.exceptions;
 
-import br.com.demattosiury.crud_users_and_auth.exceptions.error.ErrorDetails;
-import br.com.demattosiury.crud_users_and_auth.exceptions.user.UserAlreadyExists;
+import br.com.rufuziu.crud_users_and_auth.exceptions.error.ErrorDetails;
+import br.com.rufuziu.crud_users_and_auth.exceptions.user.UserAlreadyExists;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

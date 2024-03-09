@@ -1,8 +1,8 @@
-package br.com.demattosiury.crud_users_and_auth.controller;
+package br.com.rufuziu.crud_users_and_auth.controller;
 
-import br.com.demattosiury.crud_users_and_auth.dto.UserDTO;
-import br.com.demattosiury.crud_users_and_auth.services.EmailService;
-import br.com.demattosiury.crud_users_and_auth.services.UserService;
+import br.com.rufuziu.crud_users_and_auth.dto.UserDTO;
+import br.com.rufuziu.crud_users_and_auth.services.EmailService;
+import br.com.rufuziu.crud_users_and_auth.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

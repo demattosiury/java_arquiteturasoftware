@@ -1,4 +1,4 @@
-package br.com.demattosiury.crud_users_and_auth.exceptions.error;
+package br.com.rufuziu.crud_users_and_auth.exceptions.error;
 
 import java.time.LocalDateTime;
 

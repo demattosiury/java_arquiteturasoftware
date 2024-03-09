@@ -1,4 +1,4 @@
-package br.com.demattosiury.crud_users_and_auth.exceptions.user;
+package br.com.rufuziu.crud_users_and_auth.exceptions.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

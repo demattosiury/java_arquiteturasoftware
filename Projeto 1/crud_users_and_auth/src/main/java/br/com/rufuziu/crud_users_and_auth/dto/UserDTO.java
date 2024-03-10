@@ -7,7 +7,6 @@ public class UserDTO {
     private String email;
     private String password;
     private Date birthday;
-    private Boolean active;
     private Date loginDate;
 
     public UserDTO() {
@@ -43,14 +42,6 @@ public class UserDTO {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 
     public Date getLoginDate() {

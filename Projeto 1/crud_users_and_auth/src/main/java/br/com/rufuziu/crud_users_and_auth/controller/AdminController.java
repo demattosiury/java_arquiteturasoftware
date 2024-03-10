@@ -12,27 +12,25 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/")
 @Validated
-public class UserController {
+public class AdminController {
 
     private final UserService userService;
     private final EmailService emailService;
 
-    public UserController(UserService userService,
-                          EmailService emailService
+    public AdminController(UserService userService,
+                           EmailService emailService
     ) {
         this.userService = userService;
         this.emailService = emailService;
     }
 
-    @PostMapping("v1/users/create/user")
-    public ResponseEntity<String> userCreate(@RequestBody @Valid UserDTO userDto) {
-        return null;
-    }
-
-    @PatchMapping("v1/users/active/{email}")
-    public ResponseEntity<String> userActivate(@PathVariable String email) {
-        if (userService.activateUserByEmail(email) > 0)
-            return ResponseEntity.ok("User activated!");
-        else return ResponseEntity.badRequest().build();
+    @PostMapping("v1/admin/create/user")
+    public ResponseEntity<String> adminCreate(@RequestBody @Valid UserDTO userDto) {
+        Boolean value = userService.createUser(userDto);
+        if (value) {
+            emailService.sendEmail(userDto.getEmail(), "ACTIVE YOUR ACCOUNT", "<button>Click here!</button>");
+            return ResponseEntity.status(HttpStatus.CREATED).body("User created!");
+        } else return
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create a new user!");
     }
 }

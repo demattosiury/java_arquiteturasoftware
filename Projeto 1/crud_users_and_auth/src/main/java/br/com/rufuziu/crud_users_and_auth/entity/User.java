@@ -18,6 +18,9 @@ public class User {
     private Boolean active;
     private Date loginDate;
 
+    public User() {
+        this.active = false;
+    }
 
     public Long getId() {
         return id;

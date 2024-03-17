@@ -27,7 +27,6 @@ public class EmailService {
         try {
             javaMailSender.send(message);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             repository.save(new FailedMail(to,subject,body));
         }
     }

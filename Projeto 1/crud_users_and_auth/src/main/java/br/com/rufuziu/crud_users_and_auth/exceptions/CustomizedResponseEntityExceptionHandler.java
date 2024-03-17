@@ -3,6 +3,7 @@ package br.com.rufuziu.crud_users_and_auth.exceptions;
 import br.com.rufuziu.crud_users_and_auth.exceptions.error.ErrorDetails;
 import br.com.rufuziu.crud_users_and_auth.exceptions.general.InvalidRequest;
 import br.com.rufuziu.crud_users_and_auth.exceptions.user.UserAlreadyExists;
+import br.com.rufuziu.crud_users_and_auth.exceptions.user.UserNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -46,5 +47,16 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
                 request.getDescription(false)
         );
         return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(UserNotFound.class)
+    public final ResponseEntity<ErrorDetails> handleUserNotFoundException(
+            Exception ex,
+            WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 }

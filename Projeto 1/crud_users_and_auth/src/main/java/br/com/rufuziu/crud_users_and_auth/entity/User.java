@@ -1,11 +1,14 @@
 package br.com.rufuziu.crud_users_and_auth.entity;
 
+import br.com.rufuziu.crud_users_and_auth.dto.user.UserDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
-@Entity(name="users")
+@Entity(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,9 +17,9 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
-    private Date birthday;
+    private LocalDateTime birthday;
     private Boolean active;
-    private Date loginDate;
+    private LocalDateTime loginDate;
 
     public User() {
         this.active = false;
@@ -46,11 +49,11 @@ public class User {
         this.password = password;
     }
 
-    public Date getBirthday() {
+    public LocalDateTime getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDateTime birthday) {
         this.birthday = birthday;
     }
 
@@ -62,11 +65,16 @@ public class User {
         this.active = active;
     }
 
-    public Date getLoginDate() {
+    public LocalDateTime getLoginDate() {
         return loginDate;
     }
 
-    public void setLoginDate(Date loginDate) {
+    public void setLoginDate(LocalDateTime loginDate) {
         this.loginDate = loginDate;
+    }
+
+    public void updateUser(UserDTO userDTO){
+        this.email = userDTO.getEmail();
+        this.birthday = userDTO.getBirthday();
     }
 }

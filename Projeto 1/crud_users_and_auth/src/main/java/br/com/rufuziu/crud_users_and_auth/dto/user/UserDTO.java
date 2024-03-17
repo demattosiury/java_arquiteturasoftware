@@ -1,13 +1,14 @@
-package br.com.rufuziu.crud_users_and_auth.dto;
+package br.com.rufuziu.crud_users_and_auth.dto.user;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class UserDTO {
     private Long id;
     private String email;
     private String password;
-    private Date birthday;
-    private Date loginDate;
+    private LocalDateTime birthday;
+    private LocalDateTime loginDate;
 
     public UserDTO() {
     }
@@ -36,19 +37,19 @@ public class UserDTO {
         this.password = password;
     }
 
-    public Date getBirthday() {
+    public LocalDateTime getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDateTime birthday) {
         this.birthday = birthday;
     }
 
-    public Date getLoginDate() {
+    public LocalDateTime getLoginDate() {
         return loginDate;
     }
 
-    public void setLoginDate(Date loginDate) {
+    public void setLoginDate(LocalDateTime loginDate) {
         this.loginDate = loginDate;
     }
 }

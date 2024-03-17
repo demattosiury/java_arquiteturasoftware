@@ -1,6 +1,6 @@
 package br.com.rufuziu.crud_users_and_auth.controller;
 
-import br.com.rufuziu.crud_users_and_auth.dto.UserDTO;
+import br.com.rufuziu.crud_users_and_auth.dto.user.UserDTO;
 import br.com.rufuziu.crud_users_and_auth.services.EmailService;
 import br.com.rufuziu.crud_users_and_auth.services.UserService;
 import jakarta.validation.Valid;

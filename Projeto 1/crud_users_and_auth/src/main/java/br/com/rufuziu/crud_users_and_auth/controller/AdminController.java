@@ -25,12 +25,12 @@ public class AdminController {
     }
 
     @PostMapping("v1/admin/create/user")
-    public ResponseEntity<String> adminCreate(@RequestBody @Valid UserDTO userDto) {
-        Boolean value = userService.createUser(userDto);
-        if (value) {
-            emailService.sendEmail(userDto.getEmail(), "ACTIVE YOUR ACCOUNT", "<button>Click here!</button>");
-            return ResponseEntity.status(HttpStatus.CREATED).body("User created!");
+    public ResponseEntity<UserDTO> adminCreate(@RequestBody @Valid UserDTO userDto) {
+        userDto = userService.createUser(userDto);
+        if (userDto.getId() > 0) {
+            //emailService.sendEmail(userDto.getEmail(), "ACTIVE YOUR ACCOUNT", "<button>Click here!</button>");
+            return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
         } else return
-                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create a new user!");
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userDto);
     }
 }

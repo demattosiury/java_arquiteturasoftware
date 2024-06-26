@@ -8,6 +8,8 @@ import br.com.rufuziu.crud_users_and_auth.exceptions.user.UserNotFound;
 import br.com.rufuziu.crud_users_and_auth.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,17 +19,22 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository repository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository, ModelMapper modelMapper) {
+    public UserService(UserRepository repository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public Boolean createUser(UserDTO userDto) {
+    public UserDTO createUser(UserDTO userDto) {
         if (repository.existsByEmail(userDto.getEmail())) throw new UserAlreadyExists(userDto.getEmail());
 
-        return repository.save(modelMapper.map(userDto, User.class)).getId() > 0 ?
-                Boolean.TRUE : Boolean.FALSE;
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        User user = repository.save(modelMapper.map(userDto, User.class));
+
+        return modelMapper.map(user,UserDTO.class);
     }
 
     public Integer activateUserByEmail(String email) {

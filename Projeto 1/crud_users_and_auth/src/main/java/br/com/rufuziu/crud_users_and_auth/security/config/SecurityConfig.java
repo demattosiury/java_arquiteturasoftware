@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 @Configuration
 @EnableMethodSecurity
@@ -25,16 +29,13 @@ public class SecurityConfig {
     private final UserDetailsServiceImpl userService;
     private final JwtUtils jwtUtils;
 
-    public SecurityConfig(UserDetailsServiceImpl userService,
-                          JwtUtils jwtUtils) {
+    public SecurityConfig(UserDetailsServiceImpl userService, JwtUtils jwtUtils) {
         this.userService = userService;
         this.jwtUtils = jwtUtils;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager
-            (AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
@@ -56,34 +57,41 @@ public class SecurityConfig {
         return new AuthTokenFilter(jwtUtils, userService);
     }
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable());
-        http
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/h2/**")
-                                .permitAll()).headers(h -> h.frameOptions(f -> f.sameOrigin()));
+
+        http.csrf(csrf -> csrf.disable());
+        http.authorizeHttpRequests(auth ->
+                auth.requestMatchers("/h2/**")
+                        .permitAll())
+                .headers(h -> h.frameOptions(f -> f.sameOrigin()));
 
         http
 //                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(
-                        auth -> auth
-                                .requestMatchers("/v3/api-docs/**",
-                                        "/configuration/ui",
-                                        "/swagger-resources/**",
-                                        "/configuration/security",
-                                        "/swagger-ui/**",
-                                        "/webjars/**").permitAll()
-                                .requestMatchers("/api/v1/auth/**").permitAll()
-                                .anyRequest().authenticated()
-                );
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth ->
+                        auth.requestMatchers(
+                                "/v3/api-docs/**",
+                                "/configuration/ui",
+                                "/swagger-resources/**",
+                                "/configuration/security",
+                                "/swagger-ui/**",
+                                "/webjars/**")
+                                .permitAll()
+                                .requestMatchers("/api/v1/auth/**")
+                                .permitAll()
+                                .requestMatchers("/api/v1/admin/**")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated());
+
+
 
         http.authenticationProvider(authenticationProvider());
 
-        http.addFilterBefore(authenticationJwtTokenFilter(),
-                UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

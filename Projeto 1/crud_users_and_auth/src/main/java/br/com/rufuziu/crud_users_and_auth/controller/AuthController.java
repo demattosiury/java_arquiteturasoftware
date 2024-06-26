@@ -2,6 +2,7 @@ package br.com.rufuziu.crud_users_and_auth.controller;
 
 import br.com.rufuziu.crud_users_and_auth.dto.auth.AuthDTO;
 import br.com.rufuziu.crud_users_and_auth.dto.user.UserDTO;
+import br.com.rufuziu.crud_users_and_auth.dto.user.UserLoginDTO;
 import br.com.rufuziu.crud_users_and_auth.security.dto.UserDetailsImpl;
 import br.com.rufuziu.crud_users_and_auth.security.jwt.JwtUtils;
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/v1/auth")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody AuthDTO authDto) {
+    public ResponseEntity<UserLoginDTO> authenticateUser(@Valid @RequestBody AuthDTO authDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authDto.getEmail(), authDto.getPassword()));
 
@@ -51,11 +52,13 @@ public class AuthController {
 //                .collect(Collectors.toList());
 
 
+            UserLoginDTO user = new UserLoginDTO(userDetails.getId(),userDetails.getEmail(),jwtCookie.getValue());
+
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                    .body(jwtCookie.getValue());
+                    .body(user);
         }catch(Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 

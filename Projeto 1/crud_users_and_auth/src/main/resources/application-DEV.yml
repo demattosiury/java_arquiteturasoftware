@@ -51,5 +51,15 @@ spring:
           starttls:
             enable: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  file:
+    name: ./logs/crud_users_and_auth.log
+
 server:
   port: 8080

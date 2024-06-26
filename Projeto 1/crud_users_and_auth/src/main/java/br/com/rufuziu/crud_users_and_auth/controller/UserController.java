@@ -12,6 +12,8 @@ import io.jsonwebtoken.Jwts;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,7 @@ import java.util.Base64;
 public class UserController {
     private final UserService userService;
     private final JwtUtils jwtUtils;
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService, JwtUtils jwtUtils) {
         this.userService = userService;
@@ -47,16 +50,25 @@ public class UserController {
     }
 
     @PatchMapping("v1/users/active/{email}")
-    public ResponseEntity<String> userActivate(@PathVariable String email) {
-        if (userService.activateUserByEmail(email) > 0)
+    public ResponseEntity<String> userActivate(HttpServletRequest request,
+                                               @PathVariable String email) {
+        log.info(request.getRemoteAddr().concat(" is trying to activate the e-mail"));
+        if (userService.activateUserByEmail(email) > 0){
+            log.info(request.getRemoteAddr().concat(" activated the e-mail"));
             return ResponseEntity.ok("User activated!");
-        else return ResponseEntity.badRequest().build();
+        }
+        else{
+            log.error(request.getRemoteAddr().concat(" not activated the e-mail"));
+            return ResponseEntity.badRequest().build();
+        }
     }
 
+    //Not able to create a user
     @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping("v1/users/create/user")
     public ResponseEntity<UserDTO> userCreate(HttpServletRequest request,
                                               @RequestBody @Valid UserDTO userDto) {
+        log.info(request.getRemoteAddr().concat(" is trying to create a user"));
         try {
             String token;
 
@@ -84,6 +96,7 @@ public class UserController {
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("v1/users/read/user")
     public ResponseEntity<UserDTO> userRead(HttpServletRequest request) {
+        log.info(request.getRemoteAddr().concat(" is trying to read a user"));
         try {
             String token;
 
@@ -97,11 +110,14 @@ public class UserController {
             if (token != "") {
                 String email = checkTokenIntegrity(token);
                 UserDTO user = userService.readUser(email);
+                log.info(request.getRemoteAddr().concat(" will read a user"));
                 return ResponseEntity.ok(user);
             } else {
+                log.info(request.getRemoteAddr().concat(" with invalid token"));
                 return ResponseEntity.badRequest().build();
             }
         } catch (Exception e) {
+            log.error(request.getRemoteAddr().concat(e.getMessage()));
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -110,6 +126,7 @@ public class UserController {
     @PutMapping("v1/users/update/user")
     public ResponseEntity<UserDTO> userUpdate(HttpServletRequest request,
                                               @RequestBody @Valid UserDTO userDto) {
+        log.info(request.getRemoteAddr().concat(" is trying to update a user"));
         try {
             String token;
 
@@ -123,20 +140,25 @@ public class UserController {
             if (token != "") {
                 String email = checkTokenIntegrity(token);
                 userDto = userService.updateUser(userDto, email);
+                log.info(request.getRemoteAddr().concat(" updated the user"));
                 return ResponseEntity.ok()
                         .body(userDto);
             } else {
+                log.info(request.getRemoteAddr().concat(" with invalid token"));
                 return ResponseEntity.badRequest().build();
             }
         } catch (Exception e) {
+            log.error(request.getRemoteAddr().concat(e.getMessage()));
             return ResponseEntity.internalServerError().build();
         }
     }
 
+    //Not able to delete a user
     @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("v1/users/delete/user")
     public ResponseEntity<UserDTO> userDelete(HttpServletRequest request,
                                               @RequestBody @Valid UserDTO userDto) {
+        log.info(request.getRemoteAddr().concat(" is trying to delete a user"));
         try {
             String token;
 
@@ -154,9 +176,11 @@ public class UserController {
                 return ResponseEntity.badRequest()
                         .body(user);
             } else {
+                log.info(request.getRemoteAddr().concat(" with invalid token"));
                 return ResponseEntity.badRequest().build();
             }
         } catch (Exception e) {
+            log.error(request.getRemoteAddr().concat(e.getMessage()));
             return ResponseEntity.internalServerError().build();
         }
     }

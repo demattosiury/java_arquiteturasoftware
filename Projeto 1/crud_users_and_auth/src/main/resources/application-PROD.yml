@@ -1,4 +1,25 @@
 spring:
+  application:
+    jwt:
+      cookie:
+        name: token
+      expiration:
+        ms: 10800000
+      secret: 0123456789012345678901234567890123456789012345678901234567890123
+
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: 'health,metrics,info'
+
+  logging:
+    file:
+      name: ./logs/crud_users_and_auth.log
+
   h2:
     console:
       enabled: true

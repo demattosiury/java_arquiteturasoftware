@@ -80,6 +80,8 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/webjars/**")
                                 .permitAll()
+                                .requestMatchers("/actuator/**")
+                                .permitAll()
                                 .requestMatchers("/api/v1/auth/**")
                                 .permitAll()
                                 .requestMatchers("/api/v1/admin/**")

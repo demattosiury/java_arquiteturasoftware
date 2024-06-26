@@ -5,7 +5,10 @@ import br.com.rufuziu.crud_users_and_auth.dto.user.UserDTO;
 import br.com.rufuziu.crud_users_and_auth.dto.user.UserLoginDTO;
 import br.com.rufuziu.crud_users_and_auth.security.dto.UserDetailsImpl;
 import br.com.rufuziu.crud_users_and_auth.security.jwt.JwtUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +30,7 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
+    private final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     public AuthController(AuthenticationManager authenticationManager,
                           JwtUtils jwtUtils) {
@@ -35,7 +39,9 @@ public class AuthController {
     }
 
     @PostMapping("/v1/auth")
-    public ResponseEntity<UserLoginDTO> authenticateUser(@Valid @RequestBody AuthDTO authDto) {
+    public ResponseEntity<UserLoginDTO> authenticateUser(HttpServletRequest request,
+                                                         @Valid @RequestBody AuthDTO authDto) {
+        log.info(request.getRemoteAddr().concat(" is trying to authenticate"));
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authDto.getEmail(), authDto.getPassword()));
 
@@ -53,11 +59,12 @@ public class AuthController {
 
 
             UserLoginDTO user = new UserLoginDTO(userDetails.getId(),userDetails.getEmail(),jwtCookie.getValue());
-
+            log.info(request.getRemoteAddr().concat(" is successfully authenticated"));
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                     .body(user);
         }catch(Exception e){
+            log.error(request.getRemoteAddr().concat(" is successfully authenticated"));
             return ResponseEntity.badRequest().build();
         }
     }
